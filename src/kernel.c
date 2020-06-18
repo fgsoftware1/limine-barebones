@@ -2,7 +2,7 @@
 #include <stivale.h>
 
 #define VGA_ADDRESS 0xb8000
-#define VGA_COLOR(character, color) (uint16_t) character | (uint16_t) color << 8
+#define VGA_COLOR(character, color) ((uint16_t) (character) | (uint16_t) (color) << 8)
 #define VGA_BLACK        0
 #define VGA_BLUE         1
 #define VGA_GREEN        2

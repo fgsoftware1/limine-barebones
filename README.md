@@ -8,6 +8,9 @@ This project will show you how to set up a simple long mode kernel using qloader
 
 This project can be build using the host compiler on most linux distros, but it's recommended you set up a [cross compiler](https://osdev.wiki/tools:compilers:gcc:x86:generic)
 
+
+In order to build this you have to install [echfs](https://github.com/qword-os/echfs), and download qloader2. This can be done by adding a git submodule, if you're cloning this repository you can run `git submodule init` and `git submodule update`.
+
 ## the stivale header
 This structure must be present in the `.stivalehdr` section in order for your kernel to be loaded by stivale.
 
