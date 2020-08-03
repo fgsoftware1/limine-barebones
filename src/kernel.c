@@ -36,7 +36,7 @@ struct stivale_header header = {
 };
 
 void _start(struct stivale_struct *bootloader_data) {
-	uint16_t *vga_buffer = (uint16_t*)VGA_ADDRESS;
+    volatile uint16_t *vga_buffer = (uint16_t*)VGA_ADDRESS;
     vga_buffer[0] = VGA_COLOR('h', VGA_GREEN);
     vga_buffer[1] = VGA_COLOR('e', VGA_GREEN);
     vga_buffer[2] = VGA_COLOR('l', VGA_GREEN);
