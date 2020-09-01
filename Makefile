@@ -40,15 +40,18 @@ run: $(KERNEL_HDD)
 $(KERNEL_ELF): $(OBJ)
 	$(LD) $(LDHARDFLAGS) $(OBJ) -o $@
 
-$(KERNEL_HDD): $(KERNEL_ELF)
+limine/limine-install:
+	make -C limine/ limine-install
+
+$(KERNEL_HDD): $(KERNEL_ELF) limine/limine-install
 	-mkdir build
 	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
 	parted -s $(KERNEL_HDD) mklabel msdos
 	parted -s $(KERNEL_HDD) mkpart primary 1 100%
 	echfs-utils -m -p0 $(KERNEL_HDD) quick-format 32768
 	echfs-utils -m -p0 $(KERNEL_HDD) import $(KERNEL_ELF) $(KERNEL_ELF)
-	echfs-utils -m -p0 $(KERNEL_HDD) import qloader2.cfg qloader2.cfg
-	qloader2/qloader2-install qloader2/qloader2.bin $(KERNEL_HDD)
+	echfs-utils -m -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
+	limine/limine-install limine/limine.bin $(KERNEL_HDD)
 
 clean:
 	-rm -f $(KERNEL_HDD) $(KERNEL_ELF) $(OBJ)

@@ -1,6 +1,6 @@
-# qloader2 Bare Bones
+# limine Bare Bones
 
-This project will show you how to set up a simple long mode kernel using qloader2, a bootloader designed to make getting your kernel up and running as quickly as possible while supporting many useful features, such as:
+This project will show you how to set up a simple long mode kernel using limine, a bootloader designed to make getting your kernel up and running as quickly as possible while supporting many useful features, such as:
 
 
 * support for echfs, ext2 and fat32
@@ -9,7 +9,7 @@ This project will show you how to set up a simple long mode kernel using qloader
 This project can be build using the host compiler on most linux distros, but it's recommended you set up a [cross compiler](https://osdev.wiki/tools:compilers:gcc:x86:generic)
 
 
-In order to build this you have to install [echfs](https://github.com/qword-os/echfs), and download qloader2. This can be done by adding a git submodule, if you're cloning this repository you can run `git submodule init` and `git submodule update`.
+In order to build this you have to install [echfs](https://github.com/qword-os/echfs), and download limine. This can be done by adding a git submodule, if you're cloning this repository you can run `git submodule init` and `git submodule update`.
 
 ## the stivale header
 This structure must be present in the `.stivalehdr` section in order for your kernel to be loaded by stivale.
@@ -30,7 +30,7 @@ This structure must be present in the `.stivalehdr` section in order for your ke
 
 ## where to go from here
 
-The first thing you should do after booting from qloader2 is loading your own [GDT](https://osdev.wiki/x86:structures:gdt)
+The first thing you should do after booting from limine is loading your own [GDT](https://osdev.wiki/x86:structures:gdt)
 
 * Load an [IDT](https://osdev.wiki/x86:structures:gdt) so that exceptions and interrupts can be handled 
 * Write a physical memory allocator, a good starting point is a bitmap allocator
