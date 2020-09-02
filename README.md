@@ -32,7 +32,7 @@ This structure must be present in the `.stivalehdr` section in order for your ke
 
 The first thing you should do after booting from limine is loading your own [GDT](https://osdev.wiki/x86:structures:gdt)
 
-* Load an [IDT](https://osdev.wiki/x86:structures:gdt) so that exceptions and interrupts can be handled 
+* Load an [IDT](https://osdev.wiki/x86:structures:idt) so that exceptions and interrupts can be handled 
 * Write a physical memory allocator, a good starting point is a bitmap allocator
 * Write a virtual memory manager that can map, remap and unmap pages
 * Begin parsing ACPI tables, the most important one is the MADT since it contains information about the APIC
