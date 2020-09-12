@@ -41,7 +41,7 @@ $(KERNEL_ELF): $(OBJ)
 	$(LD) $(LDHARDFLAGS) $(OBJ) -o $@
 
 limine/limine-install:
-	make -C limine/ limine-install
+	$(MAKE) -C limine/ limine-install
 
 $(KERNEL_HDD): $(KERNEL_ELF) limine/limine-install
 	-mkdir build
