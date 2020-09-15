@@ -5,8 +5,9 @@ OBJ       := $(CFILES:.c=.o)
 KERNEL_HDD = build/disk.hdd
 KERNEL_ELF = kernel.elf
 
+CFLAGS = -O2 -pipe -Wall -Wextra
+
 CHARDFLAGS := $(CFLAGS)               \
-	-DBUILD_TIME='"$(BUILD_TIME)"' \
 	-std=gnu99                     \
 	-masm=intel                    \
 	-fno-pic                       \
@@ -18,10 +19,10 @@ CHARDFLAGS := $(CFLAGS)               \
 	-mcmodel=kernel                \
 	-ffreestanding                 \
 	-fno-stack-protector           \
-	-fno-omit-frame-pointer        \
 	-Isrc/                         \
 
 LDHARDFLAGS := $(LDFLAGS)        \
+	-static                   \
 	-nostdlib                 \
 	-no-pie                   \
 	-z max-page-size=0x1000   \
@@ -45,6 +46,7 @@ limine/limine-install:
 
 $(KERNEL_HDD): $(KERNEL_ELF) limine/limine-install
 	-mkdir build
+	rm -f $(KERNEL_HDD)
 	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
 	parted -s $(KERNEL_HDD) mklabel msdos
 	parted -s $(KERNEL_HDD) mkpart primary 1 100%
@@ -54,4 +56,4 @@ $(KERNEL_HDD): $(KERNEL_ELF) limine/limine-install
 	limine/limine-install limine/limine.bin $(KERNEL_HDD)
 
 clean:
-	-rm -f $(KERNEL_HDD) $(KERNEL_ELF) $(OBJ)
+	rm -f $(KERNEL_HDD) $(KERNEL_ELF) $(OBJ)
