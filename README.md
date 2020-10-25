@@ -11,22 +11,7 @@ This project can be build using the host compiler on most linux distros, but it'
 
 In order to build this you have to install [echfs](https://github.com/qword-os/echfs), and download limine. This can be done by adding a git submodule, if you're cloning this repository you can run `git submodule init` and `git submodule update`.
 
-## the stivale header
-This structure must be present in the `.stivalehdr` section in order for your kernel to be loaded by stivale.
-
-```c
-    struct stivale_header {
-        uint64_t stack;
-        // Flags
-        // bit 0   0 = text mode,   1 = graphics mode
-        uint16_t flags;
-        uint16_t framebuffer_width;
-        uint16_t framebuffer_height;
-        uint16_t framebuffer_bpp;
-   } __attribute__((packed));
-```
-
- The stack member is the stack pointer that will be loaded, the flags define information on how the kernel wants to be loaded, specifically the info on whether text mode or graphics mode should be enabled and if 5 level paging should be enabled. 
+This project covers both the stivale 1 and stivale 2 protocols, the subdirectories `src-stivale` and `src-stivale2` contain READMEs regarding the two protocols
 
 ## where to go from here
 
