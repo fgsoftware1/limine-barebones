@@ -1,3 +1,4 @@
 build/*
 kernel.elf
+kernel2.elf
 *.o
