@@ -1,17 +1,13 @@
-ENTRY(stivale2_main)
+ENTRY(_start)
 
 SECTIONS
 {
-    . = 0x100000;
-
-    .stivalehdr ALIGN(4K) :
-    {
-        KEEP(*(.stivalehdr))
-    }
+    kernel_phys_offset = 0xffffffff80000000;
+    . = kernel_phys_offset + 0x100000;
 
     .stivale2hdr ALIGN(4K) :
     {
-        KEEP(*(.stivale2hdr))
+        KEEP(*(.stivalehdr))
     }
 
     .text ALIGN(4K) :
