@@ -7,7 +7,7 @@ SECTIONS
 
     .stivale2hdr ALIGN(4K) :
     {
-        KEEP(*(.stivalehdr))
+        KEEP(*(.stivale2hdr))
     }
 
     .text ALIGN(4K) :
