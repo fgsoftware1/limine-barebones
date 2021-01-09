@@ -14,7 +14,7 @@
 #define VGA_GRAY         7
 #define VGA_DARK_GRAY    8
 #define VGA_LIGHT_BLUE   9
-#define VGA_LIGH_GREEN   10
+#define VGA_LIGHT_GREEN  10
 #define VGA_LIGHT_CYAN   11
 #define VGA_LIGHT_RED    12
 #define VGA_LIGHT_PURPLE 13
