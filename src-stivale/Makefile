@@ -1,9 +1,9 @@
 TARGET := stivale.elf
 
-CC        = cc
-LD        = ld
+CC = cc
+LD = ld
 
-CFLAGS    = -Wall -Wextra -O2 -pipe
+CFLAGS = -Wall -Wextra -O2 -pipe
 
 LDINTERNALFLAGS := \
 	-Tlinker.ld    \
@@ -27,6 +27,8 @@ INTERNALCFLAGS  :=       \
 
 CFILES := $(shell find ./ -type f -name '*.c')
 OBJ    := $(CFILES:.c=.o)
+
+.PHONY: all clean
 
 all: $(TARGET)
 

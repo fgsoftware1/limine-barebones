@@ -44,12 +44,12 @@ limine/limine-install:
 $(KERNEL_HDD): limine/limine-install src-stivale/stivale.elf src-stivale2/stivale2.elf
 	rm -f $(KERNEL_HDD)
 	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
-	parted -s $(KERNEL_HDD) mklabel msdos
-	parted -s $(KERNEL_HDD) mkpart primary 1 100%
-	echfs-utils -m -p0 $(KERNEL_HDD) quick-format 32768
-	echfs-utils -m -p0 $(KERNEL_HDD) import src-stivale/stivale.elf stivale.elf
-	echfs-utils -m -p0 $(KERNEL_HDD) import src-stivale2/stivale2.elf stivale2.elf
-	echfs-utils -m -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
+	parted -s $(KERNEL_HDD) mklabel gpt
+	parted -s $(KERNEL_HDD) mkpart primary 2048s 100%
+	echfs-utils -g -p0 $(KERNEL_HDD) quick-format 512
+	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale/stivale.elf stivale.elf
+	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale2/stivale2.elf stivale2.elf
+	echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
 	limine/limine-install $(KERNEL_HDD)
 
 clean:

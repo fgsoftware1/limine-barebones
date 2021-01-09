@@ -2,32 +2,35 @@ ENTRY(_start)
 
 SECTIONS
 {
-    kernel_phys_offset = 0xffffffff80000000;
-    . = kernel_phys_offset + 0x100000;
+    /* We wanna be placed in the higher half, 2MiB above 0 in physical memory. */
+    . = 0xffffffff80200000;
 
-    .stivale2hdr ALIGN(4K) :
-    {
+    /* We place the .stivalehdr section containing the header in its own section, */
+    /* and we use the KEEP directive on it to make sure it doesn't get discarded. */
+    .stivale2hdr : {
         KEEP(*(.stivale2hdr))
     }
 
-    .text ALIGN(4K) :
-    {
-        KEEP(*(.text*))
+    /* Then let's place all the other traditional executable sections afterwards. */
+    .text : {
+        *(.text*)
     }
 
-    .rodata ALIGN(4K) :
-    {
-        KEEP(*(.rodata*))
+    .rodata : {
+        *(.rodata*)
     }
 
-    .data ALIGN(4K) :
-    {
-        KEEP(*(.data*))
+    .data : {
+        *(.data*)
     }
 
-    .bss ALIGN(4K) :
-    {
-        KEEP(*(COMMON))
-        KEEP(*(.bss*))
+    .bss : {
+        *(COMMON)
+        *(.bss*)
+    }
+
+    /* Discard unneeded sections. */
+    /DISCARD/ : {
+        *(*)
     }
 }
