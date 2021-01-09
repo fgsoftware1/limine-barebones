@@ -1,4 +1,3 @@
-build/*
-kernel.elf
-kernel2.elf
+*.elf
+*.hdd
 *.o
