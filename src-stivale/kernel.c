@@ -45,6 +45,6 @@ void _start(struct stivale_struct *stivale_struct) {
 
     // We're done, just hang...
     for (;;) {
-        asm volatile ("hlt" ::: "memory");
+        asm ("hlt");
     }
 }

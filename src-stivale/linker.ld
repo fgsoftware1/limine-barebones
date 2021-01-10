@@ -1,3 +1,4 @@
+/* Tell the linker that we want the symbol _start to be our entry point */
 ENTRY(_start)
 
 SECTIONS
@@ -27,10 +28,5 @@ SECTIONS
     .bss : {
         *(COMMON)
         *(.bss*)
-    }
-
-    /* Discard unneeded sections. */
-    /DISCARD/ : {
-        *(*)
     }
 }

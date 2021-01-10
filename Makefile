@@ -1,29 +1,4 @@
-CC         = gcc
-LD         = ld
 KERNEL_HDD = disk.hdd
-
-CFLAGS = -O2 -pipe -Wall -Wextra
-
-CHARDFLAGS := $(CFLAGS)               \
-	-std=gnu99                     \
-	-masm=intel                    \
-	-fno-pic                       \
-	-mno-sse                       \
-	-mno-sse2                      \
-	-mno-mmx                       \
-	-mno-80387                     \
-	-mno-red-zone                  \
-	-mcmodel=kernel                \
-	-ffreestanding                 \
-	-fno-stack-protector           \
-	-Isrc/                         \
-
-LDHARDFLAGS := $(LDFLAGS)        \
-	-static                   \
-	-nostdlib                 \
-	-no-pie                   \
-	-z max-page-size=0x1000   \
-	-T src/linker.ld
 
 .PHONY: clean all run
 
@@ -38,7 +13,8 @@ src-stivale2/stivale2.elf:
 src-stivale/stivale.elf:
 	$(MAKE) -C src-stivale
 
-limine/limine-install:
+limine:
+	git clone https://github.com/limine-bootloader/limine.git --depth=1 --branch=v1.0
 	$(MAKE) -C limine
 
 $(KERNEL_HDD): limine/limine-install src-stivale/stivale.elf src-stivale2/stivale2.elf
