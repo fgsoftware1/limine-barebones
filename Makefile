@@ -13,11 +13,7 @@ src-stivale2/stivale2.elf:
 src-stivale/stivale.elf:
 	$(MAKE) -C src-stivale
 
-limine:
-	git clone https://github.com/limine-bootloader/limine.git --depth=1 --branch=v1.0
-	$(MAKE) -C limine
-
-$(KERNEL_HDD): limine/limine-install src-stivale/stivale.elf src-stivale2/stivale2.elf
+$(KERNEL_HDD): src-stivale/stivale.elf src-stivale2/stivale2.elf
 	rm -f $(KERNEL_HDD)
 	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
 	parted -s $(KERNEL_HDD) mklabel gpt
@@ -26,7 +22,7 @@ $(KERNEL_HDD): limine/limine-install src-stivale/stivale.elf src-stivale2/stival
 	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale/stivale.elf stivale.elf
 	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale2/stivale2.elf stivale2.elf
 	echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
-	limine/limine-install $(KERNEL_HDD)
+	limine-install $(KERNEL_HDD)
 
 clean:
 	rm -f $(KERNEL_HDD)

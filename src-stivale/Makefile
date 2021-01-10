@@ -13,7 +13,6 @@ LDINTERNALFLAGS := \
 
 INTERNALCFLAGS  :=       \
 	-I.                  \
-	-I../limine/stivale  \
 	-ffreestanding       \
 	-fno-stack-protector \
 	-fno-pic             \
