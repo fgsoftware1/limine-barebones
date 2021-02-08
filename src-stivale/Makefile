@@ -1,7 +1,6 @@
 TARGET := stivale.elf
 
 CC = cc
-LD = ld
 
 CFLAGS = -Wall -Wextra -O2 -pipe
 
@@ -32,7 +31,7 @@ OBJ    := $(CFILES:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(LD) $(LDINTERNALFLAGS) $(OBJ) -o $@
+	$(CC) $(LDINTERNALFLAGS) $(OBJ) -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
