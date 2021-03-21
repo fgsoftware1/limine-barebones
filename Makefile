@@ -7,13 +7,17 @@ all: $(KERNEL_HDD)
 run: $(KERNEL_HDD)
 	qemu-system-x86_64 -m 2G -hda $(KERNEL_HDD)
 
+limine:
+	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
+	make -C limine
+
 src-stivale2/stivale2.elf:
 	$(MAKE) -C src-stivale2
 
 src-stivale/stivale.elf:
 	$(MAKE) -C src-stivale
 
-$(KERNEL_HDD): src-stivale/stivale.elf src-stivale2/stivale2.elf
+$(KERNEL_HDD): limine src-stivale/stivale.elf src-stivale2/stivale2.elf
 	rm -f $(KERNEL_HDD)
 	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
 	parted -s $(KERNEL_HDD) mklabel gpt
@@ -22,7 +26,8 @@ $(KERNEL_HDD): src-stivale/stivale.elf src-stivale2/stivale2.elf
 	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale/stivale.elf stivale.elf
 	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale2/stivale2.elf stivale2.elf
 	echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
-	limine-install $(KERNEL_HDD)
+	echfs-utils -g -p0 $(KERNEL_HDD) import limine/limine.sys limine.sys
+	./limine/limine-install $(KERNEL_HDD)
 
 clean:
 	rm -f $(KERNEL_HDD)
