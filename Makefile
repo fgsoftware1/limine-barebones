@@ -8,7 +8,7 @@ run: $(KERNEL_HDD)
 	qemu-system-x86_64 -m 2G -hda $(KERNEL_HDD)
 
 limine:
-	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
+	git clone https://github.com/limine-bootloader/limine.git --branch=latest-binary --depth=1
 	make -C limine
 
 src-stivale2/stivale2.elf:
