@@ -14,7 +14,7 @@ static uint8_t stack[4096];
 // This tag tells the bootloader that we want a graphical framebuffer instead
 // of a CGA-compatible text mode. Omitting this tag will make the bootloader
 // default to text mode.
-struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
+static struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
     // All tags need to begin with an identifier and a pointer to the next tag.
     .tag = {
         // Identification constant defined in stivale2.h and the specification.
@@ -34,7 +34,7 @@ struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
 // for the bootloader to find it. We use this __attribute__ directive to
 // tell the compiler to put the following structure in said section.
 __attribute__((section(".stivale2hdr"), used))
-struct stivale2_header stivale_hdr = {
+static struct stivale2_header stivale_hdr = {
     // The entry_point member is used to specify an alternative entry
     // point that the bootloader should jump to instead of the executable's
     // ELF entry point. We do not care about that so we leave it zeroed.

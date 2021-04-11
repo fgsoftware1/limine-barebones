@@ -11,7 +11,7 @@ static uint8_t stack[4096];
 // for the bootloader to find it. We use this __attribute__ directive to
 // tell the compiler to put the following structure in said section.
 __attribute__((section(".stivalehdr"), used))
-struct stivale_header stivale_hdr = {
+static struct stivale_header stivale_hdr = {
     // Let's tell the bootloader where our stack is.
     // We need to add the sizeof(stack) since in x86(_64) the stack grows
     // downwards.
