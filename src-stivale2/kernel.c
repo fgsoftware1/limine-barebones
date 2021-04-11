@@ -75,11 +75,11 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
 // The following will be our kernel's entry point.
 void _start(struct stivale2_struct *stivale2_struct) {
     // Let's get the framebuffer tag.
-    struct stivale2_struct_tag_framebuffer *fb_hdr_tag;
-    fb_hdr_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
+    struct stivale2_struct_tag_framebuffer *fb_str_tag;
+    fb_str_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
 
     // Check if the tag was actually found.
-    if (fb_hdr_tag == NULL) {
+    if (fb_str_tag == NULL) {
         // It wasn't found, just hang...
         for (;;) {
             asm ("hlt");
@@ -87,7 +87,7 @@ void _start(struct stivale2_struct *stivale2_struct) {
     }
 
     // Let's get the address of the framebuffer.
-    uint8_t *fb_addr = (uint8_t *)fb_hdr_tag->framebuffer_addr;
+    uint8_t *fb_addr = (uint8_t *)fb_str_tag->framebuffer_addr;
 
     // Let's try to paint a few pixels white in the top left, so we know
     // that we booted correctly.
