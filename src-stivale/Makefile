@@ -7,20 +7,17 @@ CFLAGS = -Wall -Wextra -O2 -pipe
 LDINTERNALFLAGS := \
 	-Tlinker.ld    \
 	-nostdlib      \
-	-shared        \
+	-static-pie    \
 	-pie -fno-pic -fpie \
 	-z max-page-size=0x1000
 
 INTERNALCFLAGS  :=       \
 	-I.                  \
+	-std=gnu11           \
 	-ffreestanding       \
 	-fno-stack-protector \
 	-fno-pic -fpie       \
-	-mno-80387           \
-	-mno-mmx             \
-	-mno-3dnow           \
-	-mno-sse             \
-	-mno-sse2            \
+	-mgeneral-regs-only  \
 	-mno-red-zone
 
 CFILES := $(shell find ./ -type f -name '*.c')
