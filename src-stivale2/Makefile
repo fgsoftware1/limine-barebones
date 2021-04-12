@@ -4,11 +4,11 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -O2 -pipe
 
-LDINTERNALFLAGS := \
-	-Tlinker.ld    \
-	-nostdlib      \
-	-static-pie    \
-	-pie -fno-pic -fpie \
+LDINTERNALFLAGS :=   \
+	-Tlinker.ld      \
+	-nostdlib        \
+	-pie -static-pie \
+	-fno-pic -fpie   \
 	-z max-page-size=0x1000
 
 INTERNALCFLAGS  :=       \
