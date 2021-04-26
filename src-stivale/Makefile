@@ -1,4 +1,4 @@
-TARGET := stivale.elf
+KERNEL := stivale.elf
 
 CC = cc
 
@@ -25,13 +25,13 @@ OBJ    := $(CFILES:.c=.o)
 
 .PHONY: all clean
 
-all: $(TARGET)
+all: $(KERNEL)
 
-$(TARGET): $(OBJ)
+$(KERNEL): $(OBJ)
 	$(CC) $(LDINTERNALFLAGS) $(OBJ) -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(TARGET) $(OBJ)
+	rm -rf $(KERNEL) $(OBJ)
