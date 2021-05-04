@@ -4,8 +4,9 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -O2 -pipe
 
-LDINTERNALFLAGS := \
+INTERNALLDFLAGS := \
 	-fno-pic -fpie \
+	-Wl,-static,-pie,--no-dynamic-linker,-ztext \
 	-static-pie    \
 	-nostdlib      \
 	-Tlinker.ld    \
@@ -28,7 +29,7 @@ OBJ    := $(CFILES:.c=.o)
 all: $(KERNEL)
 
 $(KERNEL): $(OBJ)
-	$(CC) $(LDINTERNALFLAGS) $(OBJ) -o $@
+	$(CC) $(INTERNALLDFLAGS) $(OBJ) -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
