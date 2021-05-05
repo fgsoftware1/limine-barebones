@@ -1,4 +1,6 @@
 limine
+stivale.h
+stivale2.h
 *.elf
 *.hdd
 *.o

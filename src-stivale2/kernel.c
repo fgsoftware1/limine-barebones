@@ -10,17 +10,34 @@ static uint8_t stack[4096];
 // bootloader, or receiving info FROM it. More information about these tags
 // is found in the stivale2 specification.
 
-// As an example header tag, we're gonna define a framebuffer header tag.
-// This tag tells the bootloader that we want a graphical framebuffer instead
-// of a CGA-compatible text mode. Omitting this tag will make the bootloader
-// default to text mode.
-static struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
+// stivale2 offers a runtime terminal service which can be ditched at any
+// time, but it provides an easy way to print out to graphical terminal,
+// especially during early boot.
+static struct stivale2_header_tag_terminal terminal_hdr_tag = {
     // All tags need to begin with an identifier and a pointer to the next tag.
     .tag = {
         // Identification constant defined in stivale2.h and the specification.
-        .identifier = STIVALE2_HEADER_TAG_FRAMEBUFFER_ID,
-        // If next is 0, then this marks the end of the linked list of tags.
+        .identifier = STIVALE2_HEADER_TAG_TERMINAL_ID,
+        // If next is 0, it marks the end of the linked list of header tags.
         .next = 0
+    },
+    // The terminal header tag possesses a flags field, leave it as 0 for now
+    // as it is unused.
+    .flags = 0
+};
+
+// We are now going to define a framebuffer header tag, which is mandatory when
+// using the stivale2 terminal.
+// This tag tells the bootloader that we want a graphical framebuffer instead
+// of a CGA-compatible text mode. Omitting this tag will make the bootloader
+// default to text mode, if available.
+static struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
+    // Same as above.
+    .tag = {
+        .identifier = STIVALE2_HEADER_TAG_FRAMEBUFFER_ID,
+        // Instead of 0, we now point to the previous header tag. The order in
+        // which header tags are linked does not matter.
+        .next = (uint64_t)&terminal_hdr_tag
     },
     // We set all the framebuffer specifics to 0 as we want the bootloader
     // to pick the best it can.
@@ -46,7 +63,7 @@ static struct stivale2_header stivale_hdr = {
     // No flags are currently defined as per spec and should be left to 0.
     .flags = 0,
     // This header structure is the root of the linked list of header tags and
-    // points to the first one (and in our case, only).
+    // points to the first one in the linked list.
     .tags = (uintptr_t)&framebuffer_hdr_tag
 };
 
@@ -74,26 +91,29 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
 
 // The following will be our kernel's entry point.
 void _start(struct stivale2_struct *stivale2_struct) {
-    // Let's get the framebuffer tag.
-    struct stivale2_struct_tag_framebuffer *fb_str_tag;
-    fb_str_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
+    // Let's get the terminal structure tag from the bootloader.
+    struct stivale2_struct_tag_terminal *term_str_tag;
+    term_str_tag = stivale2_get_tag(stivale2_struct, STIVALE2_STRUCT_TAG_TERMINAL_ID);
 
     // Check if the tag was actually found.
-    if (fb_str_tag == NULL) {
+    if (term_str_tag == NULL) {
         // It wasn't found, just hang...
         for (;;) {
             asm ("hlt");
         }
     }
 
-    // Let's get the address of the framebuffer.
-    uint8_t *fb_addr = (uint8_t *)fb_str_tag->framebuffer_addr;
+    // Let's get the address of the terminal write function.
+    void *term_write_ptr = (void *)term_str_tag->term_write;
 
-    // Let's try to paint a few pixels white in the top left, so we know
-    // that we booted correctly.
-    for (size_t i = 0; i < 128; i++) {
-        fb_addr[i] = 0xff;
-    }
+    // Now, let's assign this pointer to a function pointer which
+    // matches the prototype described in the stivale2 specification for
+    // the stivale2_term_write function.
+    void (*term_write)(const char *string, size_t length) = term_write_ptr;
+
+    // We should now be able to call the above function pointer to print out
+    // a simple "Hello World" to screen.
+    term_write("Hello World", 11);
 
     // We're done, just hang...
     for (;;) {

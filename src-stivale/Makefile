@@ -31,7 +31,10 @@ all: $(KERNEL)
 $(KERNEL): $(OBJ)
 	$(CC) $(INTERNALLDFLAGS) $(OBJ) -o $@
 
-%.o: %.c
+stivale.h:
+	wget https://github.com/stivale/stivale/raw/master/stivale.h
+
+%.o: %.c stivale.h
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
 clean:
