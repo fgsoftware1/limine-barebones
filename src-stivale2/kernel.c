@@ -60,8 +60,9 @@ static struct stivale2_header stivale_hdr = {
     // We need to add the sizeof(stack) since in x86(_64) the stack grows
     // downwards.
     .stack = (uintptr_t)stack + sizeof(stack),
-    // No flags are currently defined as per spec and should be left to 0.
-    .flags = 0,
+    // Bit 1, if set, causes the bootloader to return to us pointers in the
+    // higher half, which we likely want.
+    .flags = (1 << 1),
     // This header structure is the root of the linked list of header tags and
     // points to the first one in the linked list.
     .tags = (uintptr_t)&framebuffer_hdr_tag
