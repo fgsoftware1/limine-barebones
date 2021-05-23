@@ -1,11 +1,11 @@
-KERNEL_HDD = disk.hdd
+ISO_IMAGE = disk.iso
 
 .PHONY: clean all run
 
-all: $(KERNEL_HDD)
+all: $(ISO_IMAGE)
 
-run: $(KERNEL_HDD)
-	qemu-system-x86_64 -M q35 -m 2G -hda $(KERNEL_HDD)
+run: $(ISO_IMAGE)
+	qemu-system-x86_64 -M q35 -m 2G -cdrom $(ISO_IMAGE)
 
 limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
@@ -17,17 +17,18 @@ src-stivale2/stivale2.elf:
 src-stivale/stivale.elf:
 	$(MAKE) -C src-stivale
 
-$(KERNEL_HDD): limine src-stivale/stivale.elf src-stivale2/stivale2.elf
-	rm -f $(KERNEL_HDD)
-	dd if=/dev/zero bs=1M count=0 seek=64 of=$(KERNEL_HDD)
-	parted -s $(KERNEL_HDD) mklabel gpt
-	parted -s $(KERNEL_HDD) mkpart primary 2048s 100%
-	echfs-utils -g -p0 $(KERNEL_HDD) quick-format 512
-	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale/stivale.elf stivale.elf
-	echfs-utils -g -p0 $(KERNEL_HDD) import src-stivale2/stivale2.elf stivale2.elf
-	echfs-utils -g -p0 $(KERNEL_HDD) import limine.cfg limine.cfg
-	echfs-utils -g -p0 $(KERNEL_HDD) import limine/limine.sys limine.sys
-	./limine/limine-install $(KERNEL_HDD)
+$(ISO_IMAGE): limine src-stivale/stivale.elf src-stivale2/stivale2.elf
+	rm -rf iso_root
+	mkdir -p iso_root
+	cp src-stivale/stivale.elf src-stivale2/stivale2.elf \
+		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-eltorito-efi.bin iso_root/
+	xorriso -as mkisofs -b limine-cd.bin \
+		-no-emul-boot -boot-load-size 4 -boot-info-table \
+		--efi-boot limine-eltorito-efi.bin \
+		-efi-boot-part --efi-boot-image --protective-msdos-label \
+		iso_root -o $(ISO_IMAGE)
+	limine/limine-install $(ISO_IMAGE)
+	rm -rf iso_root
 
 clean:
 	rm -f $(KERNEL_HDD)
