@@ -11,16 +11,13 @@ limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
 	make -C limine
 
-src-stivale2/stivale2.elf:
-	$(MAKE) -C src-stivale2
+src/stivale2.elf:
+	$(MAKE) -C src
 
-src-stivale/stivale.elf:
-	$(MAKE) -C src-stivale
-
-$(ISO_IMAGE): limine src-stivale/stivale.elf src-stivale2/stivale2.elf
+$(ISO_IMAGE): limine src/stivale2.elf
 	rm -rf iso_root
 	mkdir -p iso_root
-	cp src-stivale/stivale.elf src-stivale2/stivale2.elf \
+	cp src/stivale2.elf \
 		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-eltorito-efi.bin iso_root/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
@@ -31,6 +28,5 @@ $(ISO_IMAGE): limine src-stivale/stivale.elf src-stivale2/stivale2.elf
 	rm -rf iso_root
 
 clean:
-	rm -f $(KERNEL_HDD)
-	$(MAKE) -C src-stivale clean
-	$(MAKE) -C src-stivale2 clean
+	rm -f $(ISO_IMAGE)
+	$(MAKE) -C src clean
