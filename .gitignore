@@ -1,6 +1,6 @@
 limine
-stivale.h
-stivale2.h
+stivale-barebones/stivale.h
+stivale2-barebones/stivale2.h
 *.elf
 *.iso
 *.o
