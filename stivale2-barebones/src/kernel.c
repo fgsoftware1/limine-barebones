@@ -62,6 +62,9 @@ static struct stivale2_header stivale_hdr = {
     .stack = (uintptr_t)stack + sizeof(stack),
     // Bit 1, if set, causes the bootloader to return to us pointers in the
     // higher half, which we likely want.
+    // Bit 2, if set, tells the bootloader to enable protected memory ranges,
+    // that is, to respect the ELF PHDR mandated permissions for the executable's
+    // segments.
     .flags = (1 << 1) | (1 << 2),
     // This header structure is the root of the linked list of header tags and
     // points to the first one in the linked list.

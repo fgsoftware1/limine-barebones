@@ -1,4 +1,4 @@
-KERNEL := stivale2.elf
+KERNEL := kernel.elf
 
 CC = cc
 
