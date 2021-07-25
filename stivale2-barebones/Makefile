@@ -1,6 +1,6 @@
 ISO_IMAGE = disk.iso
 
-.PHONY: clean all run
+.PHONY: all run clean distclean
 
 all: $(ISO_IMAGE)
 
@@ -11,13 +11,13 @@ limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
 	make -C limine
 
-src/kernel.elf:
-	$(MAKE) -C src
+kernel/kernel.elf:
+	$(MAKE) -C kernel
 
-$(ISO_IMAGE): limine src/kernel.elf
+$(ISO_IMAGE): limine kernel/kernel.elf
 	rm -rf iso_root
 	mkdir -p iso_root
-	cp src/kernel.elf \
+	cp kernel/kernel.elf \
 		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-eltorito-efi.bin iso_root/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
@@ -29,4 +29,7 @@ $(ISO_IMAGE): limine src/kernel.elf
 
 clean:
 	rm -f $(ISO_IMAGE)
-	$(MAKE) -C src clean
+	$(MAKE) -C kernel clean
+
+distclean: clean
+	rm -rf limine kernel/stivale2.h

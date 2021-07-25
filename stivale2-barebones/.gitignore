@@ -1,5 +1,5 @@
 limine
-stivale2.h
+kernel/stivale2.h
 *.elf
 *.iso
 *.o
