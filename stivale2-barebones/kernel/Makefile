@@ -1,10 +1,10 @@
 KERNEL := kernel.elf
 
-CC = cc
-LD = ld
+CC ?= cc
+LD ?= ld
 
-CFLAGS = -Wall -Wextra -O2 -pipe
-LDFLAGS =
+CFLAGS ?= -Wall -Wextra -O2 -pipe
+LDFLAGS ?=
 
 INTERNALLDFLAGS :=         \
 	-Tlinker.ld            \
@@ -20,7 +20,7 @@ INTERNALCFLAGS  :=       \
 	-std=gnu11           \
 	-ffreestanding       \
 	-fno-stack-protector \
-	-fno-pic -fpie       \
+	-fpie                \
 	-mno-80387           \
 	-mno-mmx             \
 	-mno-3dnow           \
