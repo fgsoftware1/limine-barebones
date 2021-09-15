@@ -4,7 +4,7 @@
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
-static uint8_t stack[4096];
+static uint8_t stack[8192];
 
 // The stivale specification says we need to define a "header structure".
 // This structure needs to reside in the .stivalehdr ELF section in order

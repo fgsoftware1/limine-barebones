@@ -4,7 +4,7 @@
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an uninitialised array in .bss.
-static uint8_t stack[4096];
+static uint8_t stack[8192];
 
 // stivale2 uses a linked list of tags for both communicating TO the
 // bootloader, or receiving info FROM it. More information about these tags
@@ -26,8 +26,7 @@ static struct stivale2_header_tag_terminal terminal_hdr_tag = {
     .flags = 0
 };
 
-// We are now going to define a framebuffer header tag, which is mandatory when
-// using the stivale2 terminal.
+// We are now going to define a framebuffer header tag.
 // This tag tells the bootloader that we want a graphical framebuffer instead
 // of a CGA-compatible text mode. Omitting this tag will make the bootloader
 // default to text mode, if available.
