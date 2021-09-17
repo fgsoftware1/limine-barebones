@@ -1,9 +1,9 @@
 ISO_IMAGE = disk.iso
 
-.PHONY: all run clean distclean
-
+.PHONY: all
 all: $(ISO_IMAGE)
 
+.PHONY: run
 run: $(ISO_IMAGE)
 	qemu-system-x86_64 -M q35 -m 2G -cdrom $(ISO_IMAGE)
 
@@ -11,10 +11,11 @@ limine:
 	git clone https://github.com/limine-bootloader/limine.git --branch=v2.0-branch-binary --depth=1
 	make -C limine
 
-kernel/kernel.elf:
+.PHONY: kernel
+kernel:
 	$(MAKE) -C kernel
 
-$(ISO_IMAGE): limine kernel/kernel.elf
+$(ISO_IMAGE): limine kernel
 	rm -rf iso_root
 	mkdir -p iso_root
 	cp kernel/kernel.elf \
@@ -27,9 +28,12 @@ $(ISO_IMAGE): limine kernel/kernel.elf
 	limine/limine-install $(ISO_IMAGE)
 	rm -rf iso_root
 
+.PHONY: clean
 clean:
 	rm -f $(ISO_IMAGE)
 	$(MAKE) -C kernel clean
 
+.PHONY: distclean
 distclean: clean
-	rm -rf limine kernel/stivale2.h
+	rm -rf limine
+	$(MAKE) -C kernel distclean

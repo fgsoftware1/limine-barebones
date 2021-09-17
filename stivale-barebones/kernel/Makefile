@@ -3,7 +3,7 @@ KERNEL := kernel.elf
 CC ?= cc
 LD ?= ld
 
-CFLAGS ?= -Wall -Wextra -O2 -pipe
+CFLAGS  ?= -Wall -Wextra -O2 -pipe
 LDFLAGS ?=
 
 INTERNALLDFLAGS :=         \
@@ -15,7 +15,7 @@ INTERNALLDFLAGS :=         \
 	--no-dynamic-linker    \
 	-ztext
 
-INTERNALCFLAGS  :=       \
+INTERNALCFLAGS :=        \
 	-I.                  \
 	-std=gnu11           \
 	-ffreestanding       \
@@ -26,23 +26,31 @@ INTERNALCFLAGS  :=       \
 	-mno-3dnow           \
 	-mno-sse             \
 	-mno-sse2            \
-	-mno-red-zone
+	-mno-red-zone        \
+	-MMD
 
-CFILES := $(shell find ./ -type f -name '*.c')
-OBJ    := $(CFILES:.c=.o)
+CFILES      := $(shell find ./ -type f -name '*.c')
+OBJ         := $(CFILES:.c=.o)
+HEADER_DEPS := $(CFILES:.c:.d)
 
-.PHONY: all clean
-
+.PHONY: all
 all: $(KERNEL)
 
 stivale.h:
-	wget https://github.com/stivale/stivale/raw/master/stivale.h
+	curl https://raw.githubusercontent.com/stivale/stivale/master/stivale.h -o $@
 
 $(KERNEL): $(OBJ)
 	$(LD) $(OBJ) $(LDFLAGS) $(INTERNALLDFLAGS) -o $@
 
+-include $(HEADER_DEPS)
+
 %.o: %.c stivale.h
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
+.PHONY: clean
 clean:
-	rm -rf $(KERNEL) $(OBJ)
+	rm -rf $(KERNEL) $(OBJ) $(HEADER_DEPS)
+
+.PHONY: distclean
+distclean: clean
+	rm -f stivale.h

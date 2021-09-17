@@ -3,3 +3,4 @@ kernel/stivale2.h
 *.elf
 *.iso
 *.o
+*.d
