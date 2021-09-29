@@ -31,7 +31,7 @@ INTERNALCFLAGS :=        \
 
 CFILES      := $(shell find ./ -type f -name '*.c')
 OBJ         := $(CFILES:.c=.o)
-HEADER_DEPS := $(CFILES:.c:.d)
+HEADER_DEPS := $(CFILES:.c=.d)
 
 .PHONY: all
 all: $(KERNEL)
