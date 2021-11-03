@@ -64,7 +64,8 @@ static struct stivale2_header stivale_hdr = {
     // Bit 2, if set, tells the bootloader to enable protected memory ranges,
     // that is, to respect the ELF PHDR mandated permissions for the executable's
     // segments.
-    .flags = (1 << 1) | (1 << 2),
+    // Bit 4 disables a deprecated feature and should always be set.
+    .flags = (1 << 1) | (1 << 2) | (1 << 4),
     // This header structure is the root of the linked list of header tags and
     // points to the first one in the linked list.
     .tags = (uintptr_t)&framebuffer_hdr_tag

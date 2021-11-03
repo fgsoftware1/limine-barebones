@@ -22,7 +22,8 @@ static struct stivale_header stivale_hdr = {
     // bootloader default to a CGA-compatible text mode instead.
     // We also toggle bit 3 as that will make the bootloader offset pointers
     // given to us to the higher half.
-    .flags = (1 << 0) | (1 << 3),
+    // Bit 4 disables a deprecated feature and should always be set.
+    .flags = (1 << 0) | (1 << 3) | (1 << 4),
     // We set all the framebuffer specifics to 0 as we want the bootloader
     // to pick the best it can.
     .framebuffer_width  = 0,
