@@ -3,7 +3,7 @@
 #include <stivale2.h>
 
 // We need to tell the stivale bootloader where we want our stack to be.
-// We are going to allocate our stack as an uninitialised array in .bss.
+// We are going to allocate our stack as an array in .bss.
 static uint8_t stack[8192];
 
 // stivale2 uses a linked list of tags for both communicating TO the
@@ -60,12 +60,16 @@ static struct stivale2_header stivale_hdr = {
     // downwards.
     .stack = (uintptr_t)stack + sizeof(stack),
     // Bit 1, if set, causes the bootloader to return to us pointers in the
-    // higher half, which we likely want.
+    // higher half, which we likely want since this is a higher half kernel.
     // Bit 2, if set, tells the bootloader to enable protected memory ranges,
     // that is, to respect the ELF PHDR mandated permissions for the executable's
     // segments.
+    // Bit 3, if set, enables fully virtual kernel mappings, which we want as
+    // they allow the bootloader to pick whichever *physical* memory address is
+    // available to load the kernel, rather than relying on us telling it where
+    // to load it.
     // Bit 4 disables a deprecated feature and should always be set.
-    .flags = (1 << 1) | (1 << 2) | (1 << 4),
+    .flags = (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4),
     // This header structure is the root of the linked list of header tags and
     // points to the first one in the linked list.
     .tags = (uintptr_t)&framebuffer_hdr_tag

@@ -13,22 +13,22 @@ PHDRS
     text    PT_LOAD    FLAGS((1 << 0) | (1 << 2)) ; /* Execute + Read */
     rodata  PT_LOAD    FLAGS((1 << 2)) ;            /* Read only */
     data    PT_LOAD    FLAGS((1 << 1) | (1 << 2)) ; /* Write + Read */
-    dynamic PT_DYNAMIC FLAGS((1 << 1) | (1 << 2)) ; /* Dynamic segment needed for PIE */
 }
 
 SECTIONS
 {
-    /* We wanna be placed in the higher half, 2MiB above 0 in physical memory. */
-    /* Since we are going to use PIE, this is just the base load address, but the */
-    /* bootloader will be able to relocate us as it sees fit. */
-    . = 0xffffffff80200000;
+    /* We wanna be placed in the topmost 2GiB of the address space, for optimisations */
+    /* and because that is what the stivale2 spec mandates. */
+    /* Any address in this region will do, but often 0xffffffff80000000 is chosen as */
+    /* that is the beginning of the region. */
+    . = 0xffffffff80000000;
 
     .text : {
         *(.text*)
     } :text
 
     /* Move to the next memory page for .rodata */
-    . += 0x1000;
+    . += CONSTANT(MAXPAGESIZE);
 
     /* We place the .stivale2hdr section containing the header in its own section, */
     /* and we use the KEEP directive on it to make sure it doesn't get discarded. */
@@ -41,16 +41,11 @@ SECTIONS
     } :rodata
 
     /* Move to the next memory page for .data */
-    . += 0x1000;
+    . += CONSTANT(MAXPAGESIZE);
 
     .data : {
         *(.data*)
     } :data
-
-    /* Dynamic section needed for PIE */
-    .dynamic : {
-        *(.dynamic)
-    } :data :dynamic
 
     .bss : {
         *(COMMON)
