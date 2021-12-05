@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <stivale2.h>
+#include "include/stivale2.h"
 
 // We need to tell the stivale bootloader where we want our stack to be.
 // We are going to allocate our stack as an array in .bss.
