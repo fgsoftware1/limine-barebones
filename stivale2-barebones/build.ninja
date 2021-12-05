@@ -7,4 +7,4 @@ build ./kernel/bin/kernel.o: compile-c ./kernel/src/kernel.c
 
 build ./kernel/kernel.elf: link ./kernel/bin/kernel.o
 
-default ./kernel/include/stivale2.h ./kernel/kernel.elf
+default ./kernel/bin/kernel.o ./kernel/kernel.elf
