@@ -1,3 +1,7 @@
+# clone repository with submodules
+
+git clone --recurse-submodules https://github.com/fgsoftware1/limine-barebones.git
+
 # Limine Bare Bones
 
 This repository will show you how to set up a simple 64-bit x86_64 Long Mode higher half kernel using Limine, a bootloader designed to make getting your kernel up and running as quickly and pain-freely as possible while supporting many useful features, such as:
