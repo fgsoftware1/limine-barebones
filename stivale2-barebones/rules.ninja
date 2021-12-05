@@ -10,3 +10,9 @@ rule compile-c
 rule link
   command = ld -T ./kernel/linker.ld -nostdlib -zmax-page-size=0x1000 -static -o $out $in
   description = --LD linking $in
+rule copy
+  command = cp $in $out
+  description = --CP copying $in
+rule iso
+    command = xorriso  -as mkisofs -b ./limine/limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot ./limine/limine-eltorito-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label $in -o $out
+    description = --ISO making $out
