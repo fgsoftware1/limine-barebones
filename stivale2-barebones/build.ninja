@@ -3,7 +3,7 @@ include rules.ninja
 build help: HELP
 build clean: CLEAN
 
-build ./kernel/bin/kernel.o: compile-c ./kernel/kernel.c
+build ./kernel/bin/kernel.o: compile-c -c ./kernel/kernel.c
 
 build ./kernel/kernel.elf: link ./kernel/bin/kernel.o
 # copy files to iso/
