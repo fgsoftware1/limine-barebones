@@ -14,5 +14,5 @@ rule copy
   command = cp $in $out
   description = --CP copying $in
 rule iso
-    command = xorriso  -as mkisofs -b ./limine/limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot ./limine/limine-eltorito-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label $in -o $out
+    command = xorriso  -as mkisofs -b ./limine/build/bin/limine-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table --efi-boot ./limine/build/bin/limine-eltorito-efi.bin -efi-boot-part --efi-boot-image --protective-msdos-label $in -o $out
     description = --ISO making $out
