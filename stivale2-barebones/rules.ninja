@@ -4,7 +4,7 @@ rule HELP
 rule CLEAN
   command = ninja -t clean
   description = cleaning built files
-rule curl 
+rule curl
   command = curl $in -o $out
   description = downloading $in
 rule compile-c
@@ -13,4 +13,3 @@ rule compile-c
 rule link
   command = ld -T ./kernel/linker.ld -nostdlib -zmax-page-size=0x1000 static -o $out $in
   description = --LD linking $in
-  
