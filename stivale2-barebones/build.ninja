@@ -1,0 +1,12 @@
+include rules.ninja
+
+build help: HELP
+build clean: CLEAN
+
+build ./kernel/include/stivale2.h: curl https://raw.githubusercontent.com/stivale/stivale/master/stivale2.h
+
+build ./kernel/bin/kernel.o: compile-c ./kernel/src/kernel.c
+
+build ./kernel/kernel.elf: link ./kernel/bin/kernel.o
+
+default ./kernel/include/stivale2.h ./kernel/kernel.elf
