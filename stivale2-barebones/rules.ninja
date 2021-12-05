@@ -4,9 +4,6 @@ rule HELP
 rule CLEAN
   command = ninja -t clean
   description = cleaning built files
-rule curl
-  command = curl $in -o $out
-  description = downloading $in
 rule compile-c
   command = cc -Wall -Wextra -O2 -pipe -I. -std=gnu11 -ffreestanding -fno-stack-protector -fno-pic -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-red-zone -mcmodel=kernel -MMD -c $in -o $out
   description = --CC compiling $in
