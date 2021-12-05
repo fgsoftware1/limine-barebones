@@ -1,5 +1,5 @@
 #!/bin/bash
-cd limine \
-make \
-cd ../ \
+cd limine
+make
+cd ../
 ninja
