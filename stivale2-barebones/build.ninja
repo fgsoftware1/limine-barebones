@@ -6,5 +6,9 @@ build clean: CLEAN
 build ./kernel/bin/kernel.o: compile-c ./kernel/kernel.c
 
 build ./kernel/kernel.elf: link ./kernel/bin/kernel.o
+# copy files to iso/
+build iso_root/: copy kernel/kernel.elf limine.cfg limine/build/bin/limine.sys limine/build/bin/limine-cd.bin limine/build/bin/limine-eltorito-efi.bin
+# build iso
+build ./disk.iso: iso ./iso_root/
 
 default ./kernel/bin/kernel.o ./kernel/kernel.elf
