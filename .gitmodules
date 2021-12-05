@@ -1,0 +1,3 @@
+[submodule "stivale2-barebones/limine"]
+	path = stivale2-barebones/limine
+	url = https://github.com/limine-bootloader/limine
